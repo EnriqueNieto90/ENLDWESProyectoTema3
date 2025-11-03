@@ -250,7 +250,7 @@
 
     <footer>
         <caption>
-            <a href="/ENLDWESProyectoDWES/indexProyectoDWES.php">Enrique Nieto Lorenzo</a> | 03/10/2025
+            <a href="/ENLDWESProyectoDWES/indexProyectoDWES.php">Enrique Nieto Lorenzo</a> | 03/11/2025
         </caption>
     </footer>
 </body>
