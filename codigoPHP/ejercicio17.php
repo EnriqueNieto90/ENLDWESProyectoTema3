@@ -56,6 +56,13 @@
 	main{
 	justify-content:center;
 	}
+        body { font-family: sans-serif; }
+        table { border-collapse: collapse; margin: 20px auto; }
+        td, th { border: 1px solid #ccc; padding: 8px; text-align: center; min-width: 50px; }
+        th { background-color: #f2f2f2; }
+        .ocupado { background-color: #ff6b6b; color: white; font-weight: bold; }
+        .libre { background-color: #d4edda; }
+        h3 { text-align: center; }
 
     </style>
 </head>
@@ -72,40 +79,114 @@
             * 17. Inicializar un array (bidimensional con dos índices numéricos) donde almacenamos el nombre de las personas que tienen reservado el asiento en un teatro de 20 filas y 15 asientos por fila. 
             * (Inicializamos el array ocupando únicamente 5 asientos). Recorrer el array con distintas técnicas (foreach(), while(), for()) para mostrar los asientos ocupados en cada fila y las personas que lo ocupan.
             */
-            for($iFila=1;$iFila<=20;$iFila++){
-                for($iColumna=1;$iColumna<=15;$iColumna++){
-                    $aTeatro[$iFila][$iColumna]=null;
+            
+            // 1. CONFIGURACIÓN E INICIALIZACIÓN
+
+            // Usar constantes hace el código más legible y fácil de mantener.
+            const NUMERO_FILAS = 20;
+            const ASIENTOS_POR_FILA = 15;
+
+            // Se declara el array que contendrá la estructura del teatro.
+            $teatro = [];
+
+            // Bucle anidado para inicializar cada asiento del teatro a null (vacío).
+            // Es crucial crear la estructura antes de intentar acceder a sus elementos.
+            for ($fila = 1; $fila <= NUMERO_FILAS; $fila++) {
+                for ($asiento = 1; $asiento <= ASIENTOS_POR_FILA; $asiento++) {
+                    $teatro[$fila][$asiento] = null;
                 }
             }
-            $aTeatro[3][5]="Pedro";
-            $aTeatro[9][17]="Marta";
-            $aTeatro[7][10]="Ricardo";
-            $aTeatro[12][10]="Roberto";
-            $aTeatro[7][7]="Sara";
-            $aTeatro[15][20]="Rebeca";
 
-            print '<table>';
+            // 2. POBLACIÓN DE DATOS (SIMULACIÓN DE RESERVAS)
+            // Se asignan nombres a asientos específicos para simular que están ocupados.
+            $teatro[1][5]   = "Ana";
+            $teatro[5][8]   = "Luis";
+            $teatro[10][3]  = "Marta";
+            $teatro[12][12] = "Carlos";
+            $teatro[19][7]  = "Elena";
 
-            $fila = 0;
-            $numAsiento = 0;
-            foreach ($aTeatro as $numFila=>$aFila) {
+            ?>
+            
+            <h1>Plano del Teatro</h1>
+
+        <!-- ========================================================================= -->
+        <!-- === VISUALIZACIÓN CON BUCLE FOREACH (Método recomendado)                 -->
+        <!-- ========================================================================= -->
+        <h3>Recorrido con <code>foreach</code></h3>
+        <table>
+            <?php
+            // El bucle foreach es ideal para arrays, ya que abstrae el manejo de índices.
+            // El primer bucle itera sobre las filas.
+            foreach ($teatro as $numeroFila => $asientosDeLaFila) {
                 echo "<tr>";
-                $fila++;
-                //echo "<th>Pasillo ".$fila."</th>";
-                echo "<th>Pasillo ".$numFila."</th>";
-                foreach ($aFila as $numAsiento=>$asiento) {
-                    //$numAsiento++;
-                    if(is_string($asiento)){
-                        echo '<td class="ocupado">'.$asiento.'</td>';
+                echo "<th>Fila $numeroFila</th>"; // Encabezado de la fila
+
+                // El segundo bucle (anidado) itera sobre los asientos de la fila actual.
+                foreach ($asientosDeLaFila as $numeroAsiento => $ocupante) {
+                    if ($ocupante !== null) {
+                        // Si el asiento no es null, está ocupado.
+                        echo "<td class='ocupado'>$ocupante</td>";
                     } else {
-                        echo '<td>'.$fila.'-'.$numAsiento.'</td>';
+                        // Si es null, está libre.
+                        echo "<td class='libre'>$numeroAsiento</td>";
                     }
                 }
-                $numAsiento = 0;
                 echo "</tr>";
             }
-            echo "</table>";
             ?>
+        </table>
+
+        <!-- ========================================================================= -->
+        <!-- === VISUALIZACIÓN CON BUCLE FOR (Método clásico)                         -->
+        <!-- ========================================================================= -->
+        <h3>Recorrido con <code>for</code></h3>
+        <table>
+            <?php
+            // El bucle for requiere conocer los límites de la estructura.
+            for ($fila = 1; $fila <= NUMERO_FILAS; $fila++) {
+                echo "<tr>";
+                echo "<th>Fila $fila</th>";
+                for ($asiento = 1; $asiento <= ASIENTOS_POR_FILA; $asiento++) {
+                    $ocupante = $teatro[$fila][$asiento];
+                    if ($ocupante !== null) {
+                        echo "<td class='ocupado'>$ocupante</td>";
+                    } else {
+                        echo "<td class='libre'>$asiento</td>";
+                    }
+                }
+                echo "</tr>";
+            }
+            ?>
+        </table>
+
+        <!-- ========================================================================= -->
+        <!-- === VISUALIZACIÓN CON BUCLE WHILE (Método manual)                        -->
+        <!-- ========================================================================= -->
+        <h3>Recorrido con <code>while</code></h3>
+        <table>
+            <?php
+            // El bucle while requiere la inicialización y el incremento manual de los contadores.
+            $fila = 1;
+            while ($fila <= NUMERO_FILAS) {
+                echo "<tr>";
+                echo "<th>Fila $fila</th>";
+
+                $asiento = 1; // El contador de asientos se resetea por cada fila.
+                while ($asiento <= ASIENTOS_POR_FILA) {
+                    $ocupante = $teatro[$fila][$asiento];
+                    if ($ocupante !== null) {
+                        echo "<td class='ocupado'>$ocupante</td>";
+                    } else {
+                        echo "<td class='libre'>$asiento</td>";
+                    }
+                    $asiento++;
+                }
+                echo "</tr>";
+                $fila++;
+            }
+            ?>
+        </table>
+            
         </section>
     </main>
 
@@ -116,4 +197,9 @@
     </footer>
 </body>
 </html>
+
+
+
+
+    
 
