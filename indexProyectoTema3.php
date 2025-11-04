@@ -140,12 +140,12 @@
 <!--                <td><a href=""><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>-->
             </tr>
-<!--            <tr>
+            <tr>
                 <td>12</td>
                 <td>Mostrar el contenido de las variables superglobales (utilizando print_r() y foreach()).</td>
                 <td><a href="codigoPHP/ejercicio12.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href="mostrarcodigo/muestraejercicio12.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
-            </tr> -->
+            </tr>
 <!--            <tr>
                 <td>13</td>
                 <td>Crear una función que cuente el número de visitas a la página actual desde una fecha concreta.</td>
