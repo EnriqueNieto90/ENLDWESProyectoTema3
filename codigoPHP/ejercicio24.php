@@ -56,6 +56,27 @@
 	main{
 	justify-content:center;
 	}
+        
+        #telefono, #nombre {
+            background-color: lightgoldenrodyellow;
+        }
+        form *{
+            margin-top: 10px; 
+        }
+        label{
+            display: inline-block;
+            width: 80px;
+            margin-left: 20px;
+        }
+        .aviso{font-size: 0.75em;}
+        input[name="enviar"], button{
+            padding: 5px 15px;
+            margin: 10px 50px;
+            border-radius: 20px;
+            background-color: rgb(73, 136, 187);
+            color: white;
+        }
+        .error{color: red;}
 
     </style>
 </head>
@@ -79,90 +100,80 @@
              // Importación de la librería de validación
              require_once "../core/231018libreriaValidacion.php";
 
-             // Variable de control para la validación del formulario.
-             $entradaOK = true; 
+            $entradaOK = true; //Variable que nos indica que todo va bien
+            $aErrores = [  //Array donde recogemos los mensajes de error
+                'nombre' => '', 
+                'edad' => '', 
+                'telefono'=> ''
+            ];
+            $aRespuestas=[ //Array donde recogeremos la respuestas correctas (si $entradaOK)
+                'nombre' => '', 
+                'edad' => '', 
+                'telefono'=> ''
+            ]; 
 
-             // Array para almacenar los mensajes de error de los campos.
-             $arrErrores = ['nombre' => '', 'edad' => '', 'email' => ''];
+            //Para cada campo del formulario: Validar entrada y actuar en consecuencia
+            if (isset($_REQUEST["enviar"])) {//Código que se ejecuta cuando se envía el formulario
 
-             // Array para almacenar las respuestas (incluso si no son válidas, para el sticky form).
-             $arrRespuestas = ['nombre' => '', 'edad' => '', 'email' => ''];
+                // Validamos los datos del formulario
+                $aErrores['nombre']= validacionFormularios::comprobarAlfabetico($_REQUEST['nombre'],100,0,1,);
+                $aErrores['edad']= validacionFormularios::comprobarEntero($_REQUEST['edad']);
+                $aErrores['telefono'] = validacionFormularios::validarTelefono($_REQUEST['telefono']);
 
+                if(!empty($_REQUEST['telefono'])){ // Comprobar si el telefono está vacío
+                    foreach($aErrores as $campo => $valor){
+                        if(!empty($valor)){ // Comprobar si el valor es válido
+                            $entradaOK = false;
+                        } 
+                    }
+                }else{ //Construir mensajes de error
+                    $aErrores['telefono']='Introduce un teléfono';
+                    $entradaOK = false;
+                }
 
-             // Comprobar si el formulario ha sido enviado (se pulsó 'enviar').
-             if (isset($_REQUEST["enviar"])) {
+            } else {//Código que se ejecuta antes de rellenar el formulario
+                $entradaOK = false;
+            }
+            //Tratamiento del formulario
+            if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
 
-                 // --- Recogida de datos ---
-                 // Se recogen los valores aunque no sean válidos para mostrarlos de nuevo (sticky).
-                 $arrRespuestas['nombre'] = $_REQUEST["nombre"];
-                 $arrRespuestas['edad'] = $_REQUEST["edad"];
-                 $arrRespuestas['email'] = $_REQUEST["email"];
+                // Recuperar los valores del formulario
+                $aRespuestas['nombre'] = $_REQUEST['nombre'];
+                $aRespuestas['edad'] = $_REQUEST['edad'];
+                $aRespuestas['telefono'] = $_REQUEST['telefono'];
 
-                 // --- Validación del campo 'email' ---
+                echo "<h2>Resultados:</h2>";
+                foreach ($aRespuestas as $campo => $valor) {
+                    echo "<p>$campo: <b>$valor</b></p>";
+                }
 
-                 // Se valida el email usando la librería (asumiendo que existe 'validarEmail').
-                 $arrErrores['email'] = validacionFormularios::validarEmail($arrRespuestas['email']);
+                // Botón para volver a recargar el formulario inicial
+                echo '<a href="' . $_SERVER['PHP_SELF'] . '"><button>Volver</button></a>';
 
-                 // Comprobación si el email NO está vacío (obligatorio).
-                 if (!empty($arrRespuestas['email'])) { 
-                     // Si no está vacío, comprobar si la validación de formato falló.
-                     if (empty($arrErrores['email'])) { 
-                         $entradaOK = true; // El email es correcto.
-                     } else { 
-                         // El formato del email es incorrecto.
-                         $entradaOK = false;
-                     }
-                 } else { 
-                     // El email está vacío, es un error.
-                     $arrErrores['email'] = 'Introduce un email';
-                     $entradaOK = false;
-                 }
+            } else { //Mostrar el formulario hasta que lo rellenemos correctamente
+                //Mostrar formulario
+                //Mostrar los datos tecleados correctamente en intentos anteriores
+                //Mostrar mensajes de error (si los hay y el formulario no se muestra por primera vez)
+                ?>
+                    <h2>Datos personales</h2>
+                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" value="<?php echo $_REQUEST['nombre']??'' ?>"><span class="error"><?php echo $aErrores['nombre'] ?></span>
+                        <br>
+                        <label for="edad">Edad:</label>
+                        <input type="number" name="edad" value="<?php echo $_REQUEST['edad']??'' ?>">
+                        <br>
+                        <label for="telefono">Telefono:</label> 
+                        <input type="text" id="telefono" name="telefono" value="<?php echo $_REQUEST['telefono']??'' ?>"><span class="error">*<?php echo $aErrores['telefono'] ?></span>
+                        <br>
+                        <input type="submit" value="Enviar" name="enviar">
+                        <p class="aviso">*Campos obligatorios</p>
+                    </form>
 
-                 // (El resto de campos no se validan, siguiendo el ejemplo original)
+                <?php
 
-             } else {
-                 // Si el formulario no se ha enviado (primera visita), no es válido.
-                 $entradaOK = false;
-             }
-
-             // --- Tratamiento de la salida ---
-
-             if ($entradaOK) { 
-                 // Si todo es correcto, mostrar los resultados.
-                 echo "<h2>Resultados:</h2>";
-                 echo "<p>Nombre: <strong>" . $arrRespuestas['nombre'] . "</strong></p>";
-                 echo "<p>Edad: <strong>" . $arrRespuestas['edad'] . "</strong></p>";
-                 echo "<p>Email: <strong>" . $arrRespuestas['email'] . "</strong></p>";
-
-                 // Botón para volver a cargar la página del formulario.
-                 echo '<a href="' . $_SERVER['PHP_SELF'] . '"><button>Volver</button></a>';
-
-             } else { 
-                 // Si hay errores o es la primera visita, mostrar el formulario.
-                 ?>
-                     <h2>Datos personales</h2>
-                     <form action="" method="post"> 
-
-                         <label for="nombre">Nombre:</label>
-                         <input type="text" id="nombre" name="nombre" value="<?php echo $arrRespuestas['nombre'] ?>">
-                         <br>
-
-                         <label for="edad">Edad:</label>
-                         <input type="number" name="edad" value="<?php echo $arrRespuestas['edad'] ?>">
-                         <br>
-
-                         <label for="email">Email:</label> 
-                         <input type="text" id="email" name="email" value="<?php echo $arrRespuestas['email'] ?>">
-                         <span>*<?php echo $arrErrores['email'] ?></span>
-                         <br>
-
-                         <input type="submit" value="Enviar" name="enviar">
-                         <p class="aviso">*Campos obligatorios</p>
-                     </form>
-
-                 <?php
-             }
-            ?>
+            }
+           ?>
         </section>
     </main>
 
