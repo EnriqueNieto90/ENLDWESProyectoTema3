@@ -56,6 +56,26 @@
 	main{
 	justify-content:center;
 	}
+        #telefono, #nombre {
+            background-color: lightgoldenrodyellow;
+        }
+        form *{
+            margin-top: 10px; 
+        }
+        label{
+            display: inline-block;
+            width: 80px;
+            margin-left: 20px;
+        }
+        .aviso{font-size: 0.75em;}
+        input[name="enviar"], button{
+            padding: 5px 15px;
+            margin: 10px 50px;
+            border-radius: 20px;
+            background-color: rgb(73, 136, 187);
+            color: white;
+        }
+        .error{color: red;}
 
     </style>
 </head>
