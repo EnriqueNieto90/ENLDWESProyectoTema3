@@ -68,7 +68,7 @@
             <?php
             /**
              * @author: Enrique Nieto Lorenzo
-             * @since: 27/10/2025
+             * @since: 06/11/2025
              * 23.Construir un formulario para recoger un cuestionario realizado a una persona y mostrar
              * en la misma página las preguntas y las respuestas recogidas; en el caso de que alguna
              * respuesta esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente.
@@ -77,91 +77,79 @@
             // Importación de la librería de validación necesaria
             require_once "../core/231018libreriaValidacion.php";
 
-            // Variable de control que indica si la entrada de datos es correcta.
-            $entradaOK = true;
+            $entradaOK = true; //Variable que nos indica que todo va bien
+            $aErrores = [  //Array donde recogemos los mensajes de error
+                'nombre' => '', 
+                'edad' => '', 
+                'telefono'=> ''
+            ];
+            $aRespuestas=[ //Array donde recogeremos la respuestas correctas (si $entradaOK)
+                'nombre' => '', 
+                'edad' => '', 
+                'telefono'=> ''
+            ]; 
 
-            // Array para almacenar los mensajes de error de los campos.
-            $arrErrores = ['nombre' => '', 'edad' => '', 'email' => ''];
+            //Para cada campo del formulario: Validar entrada y actuar en consecuencia
+            if (isset($_REQUEST["enviar"])) {//Código que se ejecuta cuando se envía el formulario
 
-            // Array para almacenar las respuestas válidas del formulario.
-            $arrRespuestas = ['nombre' => '', 'edad' => '', 'email' => ''];
+                // Validamos los datos del formulario
+                $aErrores['nombre']= validacionFormularios::comprobarAlfabetico($_REQUEST['nombre'],100,0,1,);
+                $aErrores['edad']= validacionFormularios::comprobarEntero($_REQUEST['edad']);
+                $aErrores['telefono'] = validacionFormularios::validarTelefono($_REQUEST['telefono']);
 
-
-            // Comprobar si el formulario ha sido enviado (se ha pulsado el botón 'enviar').
-            if (isset($_REQUEST["enviar"])) {
-
-                // --- Recogida de datos ---
-                // Se recogen los valores enviados por el formulario.
-                $arrRespuestas['nombre'] = $_REQUEST["nombre"];
-                $arrRespuestas['edad'] = $_REQUEST["edad"];
-                $arrRespuestas['email'] = $_REQUEST["email"];
-
-                // --- Validación del campo 'email' ---
-
-                // Se valida el email utilizando la función correspondiente de la librería.
-                // Se asume que la librería tiene un método 'validarEmail'.
-                $arrErrores['email'] = validacionFormularios::validarEmail($arrRespuestas['email']);
-
-                // Se comprueba si el campo 'email' NO está vacío.
-                if (!empty($arrRespuestas['email'])) {
-                    // Si no está vacío, se comprueba si la validación (del formato) ha fallado.
-                    if (empty($arrErrores['email'])) {
-                        // Si no hay error, la entrada es correcta (de momento).
-                        $entradaOK = true;
-                    } else {
-                        // Si la validación ha devuelto un error (ej. formato incorrecto), la entrada no es correcta.
-                        $entradaOK = false;
+                if(!empty($_REQUEST['telefono'])){ // Comprobar si el telefono está vacío
+                    foreach($aErrores as $campo => $valor){
+                        if(!empty($valor)){ // Comprobar si el valor es válido
+                            $entradaOK = false;
+                        } 
                     }
-                } else {
-                    // Si el campo 'email' está vacío, se considera un error (campo obligatorio).
-                    $arrErrores['email'] = 'Introduce un email';
+                }else{ //Construir mensajes de error
+                    $aErrores['telefono']='Introduce un teléfono';
                     $entradaOK = false;
                 }
 
-                // (El resto de campos 'nombre' y 'edad' no se validan en esta lógica,
-                // siguiendo la estructura del ejercicio original que solo validaba un campo).
-
-            } else {
-                // Si no se ha enviado el formulario, forzamos $entradaOK a false para mostrarlo.
+            } else {//Código que se ejecuta antes de rellenar el formulario
                 $entradaOK = false;
             }
+            //Tratamiento del formulario
+            if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
 
-            // --- Tratamiento de la salida ---
+                // Recuperar los valores del formulario
+                $aRespuestas['nombre'] = $_REQUEST['nombre'];
+                $aRespuestas['edad'] = $_REQUEST['edad'];
+                $aRespuestas['telefono'] = $_REQUEST['telefono'];
 
-            if ($entradaOK) {
-                // Si $entradaOK es true, la entrada es válida y se muestran los resultados.
                 echo "<h2>Resultados:</h2>";
-                echo "<p>Nombre: <strong>" . $arrRespuestas['nombre'] . "</strong></p>";
-                echo "<p>Edad: <strong>" . $arrRespuestas['edad'] . "</strong></p>";
-                echo "<p>Email: <strong>" . $arrRespuestas['email'] . "</strong></p>";
+                foreach ($aRespuestas as $campo => $valor) {
+                    echo "<p>$campo: <b>$valor</b></p>";
+                }
 
-                // Botón para volver a recargar el formulario inicial (reiniciar el script).
+                // Botón para volver a recargar el formulario inicial
                 echo '<a href="' . $_SERVER['PHP_SELF'] . '"><button>Volver</button></a>';
 
-            } else {
-                // Si $entradaOK es false, se muestra el formulario (ya sea la primera vez o por errores).
+            } else { //Mostrar el formulario hasta que lo rellenemos correctamente
+                //Mostrar los datos tecleados correctamente en intentos anteriores
+                //Mostrar mensajes de error (si los hay y el formulario no se muestra por primera vez)
                 ?>
                     <h2>Datos personales</h2>
-                    <form action="" method="post"> 
+                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
                         <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre">
+                        <input type="text" id="nombre" name="nombre"><span class="error">*<?php echo $aErrores['nombre'] ?></span>
                         <br>
-
                         <label for="edad">Edad:</label>
                         <input type="number" name="edad">
                         <br>
-
-                        <label for="email">Email:</label> 
-                        <input type="text" id="email" name="email"><span>*<?php echo $arrErrores['email'] ?></span>
+                        <label for="telefono">Telefono:</label> 
+                        <input type="text" id="telefono" name="telefono"><span class="error">*<?php echo $aErrores['telefono'] ?></span>
                         <br>
-
                         <input type="submit" value="Enviar" name="enviar">
                         <p class="aviso">*Campos obligatorios</p>
                     </form>
 
                 <?php
+
             }
-        ?>
+           ?>
         </section>
     </main>
 

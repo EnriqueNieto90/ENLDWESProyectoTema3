@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EJERCICIO 24</title>
+    <title>EJERCICIO 23</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,7 +61,7 @@
 </head>
 <body>
     <header>
-        <h1><b>EJERCICIO 24</b></h1>
+        <h1><b>EJERCICIO 23</b></h1>
     </header>
     <main>   
         <section>
