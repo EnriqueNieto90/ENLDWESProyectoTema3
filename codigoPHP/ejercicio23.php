@@ -96,25 +96,30 @@
 
             // Importación de la librería de validación necesaria
             require_once "../core/231018libreriaValidacion.php";
-
-            $entradaOK = true; //Variable que nos indica que todo va bien
-            $aErrores = [  //Array donde recogemos los mensajes de error
+            
+            //Variable interruptor que nos indica que la entrada es correcta
+            $entradaOK = true;
+            
+            //Array asociativo preparado para recoger los mensajes de error
+            $aErrores = [
                 'nombre' => '', 
-                'edad' => '', 
+                'email' => '', 
                 'telefono'=> ''
             ];
-            $aRespuestas=[ //Array donde recogeremos la respuestas correctas (si $entradaOK)
+            
+            //Array asociativo preparado para recoger las respuestas correctas (si $entradaOK)
+            $aRespuestas=[ 
                 'nombre' => '', 
-                'edad' => '', 
+                'email' => '', 
                 'telefono'=> ''
             ]; 
 
-            //Para cada campo del formulario: Validar entrada y actuar en consecuencia
+            //Para cada campo del formulario: Validar entrada de los datos
             if (isset($_REQUEST["enviar"])) {//Código que se ejecuta cuando se envía el formulario
 
                 // Validamos los datos del formulario
                 $aErrores['nombre']= validacionFormularios::comprobarAlfabetico($_REQUEST['nombre'],100,0,1,);
-                $aErrores['edad']= validacionFormularios::comprobarEntero($_REQUEST['edad']);
+                $aErrores['email']= validacionFormularios::validarEmail($_REQUEST['email']);
                 $aErrores['telefono'] = validacionFormularios::validarTelefono($_REQUEST['telefono']);
 
                 if(!empty($_REQUEST['telefono'])){ // Comprobar si el telefono está vacío
@@ -136,7 +141,7 @@
 
                 // Recuperar los valores del formulario
                 $aRespuestas['nombre'] = $_REQUEST['nombre'];
-                $aRespuestas['edad'] = $_REQUEST['edad'];
+                $aRespuestas['email'] = $_REQUEST['email'];
                 $aRespuestas['telefono'] = $_REQUEST['telefono'];
 
                 echo "<h2>Resultados:</h2>";
@@ -156,8 +161,8 @@
                         <label for="nombre">Nombre:</label>
                         <input type="text" id="nombre" name="nombre"><span class="error">*<?php echo $aErrores['nombre'] ?></span>
                         <br>
-                        <label for="edad">Edad:</label>
-                        <input type="number" name="edad">
+                        <label for="email">Email:</label>
+                        <input type="text" name="email">
                         <br>
                         <label for="telefono">Telefono:</label> 
                         <input type="text" id="telefono" name="telefono"><span class="error">*<?php echo $aErrores['telefono'] ?></span>
