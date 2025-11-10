@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>EJERCICIO 24</title>
     <style>
+        /* (Tu CSS original va aquí, no ha cambiado) */
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
@@ -38,7 +39,7 @@
             border-left: 5px solid green;
             border-right: 5px solid green;
             transition: 0.3s;
-	    border-radius:8px;
+	        border-radius:8px;
         }
         li:hover {
             background: #d6eaf8;
@@ -51,7 +52,7 @@
             background-color: green;
             text-align: center;
             height: 150px;
-	    color: white;
+	        color: white;
         }
 
         
@@ -133,24 +134,24 @@
     <header>
         <h1><b>EJERCICIO 24</b></h1>
     </header>
-    <main>   
+    <main>    
         <section>
             <?php 
             /**
-             * @author: Enrique Nieto Lorenzo
-             * @since: 27/10/2025
-             * 24.Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la
-             * misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta
-             * esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente,
-             * pero las respuestas que habíamos tecleado correctamente aparecerán en el formulario
-             * (formulario "sticky").
-             */
+            * @author: Enrique Nieto Lorenzo
+            * @since: 27/10/2025
+            * 24.Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la
+            * misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta
+            * esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente,
+            * pero las respuestas que habíamos tecleado correctamente aparecerán en el formulario
+            * (formulario "sticky").
+            */
 
-             // Importación de la librería de validación
-             require_once "../core/231018libreriaValidacion.php";
+            // Importación de la librería de validación
+            require_once "../core/231018libreriaValidacion.php";
 
             $entradaOK = true; //Variable que nos indica que todo va bien
-            $aErrores = [  //Array donde recogemos los mensajes de error
+            $aErrores = [ //Array donde recogemos los mensajes de error
                 'T02_CodDepartamento' => '', 
                 'T02_DescDepartamento' => '',
                 'T02_FechaCreacionDepartamento' => '',
@@ -169,27 +170,34 @@
             if (isset($_REQUEST["enviar"])) {//Código que se ejecuta cuando se envía el formulario
 
                 // Validamos los datos del formulario
-                $aErrores['T02_CodDepartamento']= validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'],3,0,1,);
-                $aErrores['T02_DescDepartamento']= validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'],255,0,1,);
-                $ofechaCreacionDepartamento = new DateTime(); // creamos la fecha actual para pasarla al validarfecha
-                $aErrores['T02_FechaCreacionDepartamento']= validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'],$ofechaCreacionDepartamento->format('m/d/Y'));
-                $aErrores['T02_VolumenDeNegocio']= validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio']);
+                // CAMPO OBLIGATORIO (amarillo)
+                $aErrores['T02_CodDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'], 3, 3, 1); // 1 = Requerido
                 
+                $aErrores['T02_DescDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'], 255, 1, 1); // 1 = Requerido
+                
+                // CAMPO OBLIGATORIO (amarillo)
+                // Primero comprobamos que no esté vacío
+                $aErrores['T02_VolumenDeNegocio'] = validacionFormularios::comprobarNoVacio($_REQUEST['T02_VolumenDeNegocio']);
+                if (empty($aErrores['T02_VolumenDeNegocio'])) {
+                    // Si no está vacío, comprobamos que sea un float
+                    $aErrores['T02_VolumenDeNegocio'] = validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio']);
+                }
+                
+                // No es necesario validar la fecha de creación si es readonly y la ponemos nosotros
+                // $aErrores['T02_FechaCreacionDepartamento'] = validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'], 'now');
 
-                if(!empty($_REQUEST['T02_CodDepartamento'])){ 
-                    foreach($aErrores as $campo => $valor){
-                        if(!empty($valor)){ // Comprobar si el valor es válido
-                            $entradaOK = false;
-                        } 
-                    }
-                }else{ //Construir mensajes de error
-                    $aErrores['T02_CodDepartamento']='Introduce un código de departamento';
-                    $entradaOK = false;
+                // Recorremos el array de errores
+                foreach ($aErrores as $campo => $error) {
+                    if (!empty($error)) { // Comprobar si hay algún mensaje de error
+                        $entradaOK = false; // Si hay algún error, $entradaOK = false
+                        break; // Salimos del bucle
+                    } 
                 }
 
             } else {//Código que se ejecuta antes de rellenar el formulario
                 $entradaOK = false;
             }
+            
             //Tratamiento del formulario
             if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
                 date_default_timezone_set('Europe/Madrid');
@@ -204,49 +212,56 @@
 
                 echo "<h2>Resultados:</h2>";
                 foreach ($aRespuestas as $campo => $valor) {
-                    echo "<p>$campo: <b>$valor</b></p>";
+                    if (!empty($valor)) { // Mostramos solo los campos con respuesta
+                        echo "<p>$campo: <b>$valor</b></p>";
+                    }
                 }
 
                 // Botón para volver a recargar el formulario inicial
                 echo '<a href="' . $_SERVER['PHP_SELF'] . '"><button>Volver</button></a>';
 
             } else { //Mostrar el formulario hasta que lo rellenemos correctamente
-                //Mostrar formulario
-                //Mostrar los datos tecleados correctamente en intentos anteriores
-                //Mostrar mensajes de error (si los hay y el formulario no se muestra por primera vez)
-                ?>
-                    <h2>DATOS DEPARTAMENTO</h2>
-                    <hr>
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
+                
+                // Obtenemos la fecha de hoy en el formato YYYY-MM-DD
+                $fechaHoy = date('Y-m-d');
+            ?>
+                <h2>DATOS DEPARTAMENTO</h2>
+                <hr>
+                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
+                    <div class="form-group">
                         <label for="codDepartamento">Código de Dpto:</label>
-                        <input type="text" id="codDepartamento" name="codDepartamento" value="">
+                        <input type="text" id="codDepartamento" name="T02_CodDepartamento" value="<?php echo $_REQUEST['T02_CodDepartamento'] ?? '' ?>">
                         <span class="error"><?php echo $aErrores['T02_CodDepartamento'] ?></span>
-                        <br>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="descripcion">Descripcion Dpto:</label>
-                        <input type="text" id="descripcion" name="descripcion" value="<?php echo $_REQUEST['T02_DescDepartamento']??'' ?>">
-                        <br>
+                        <input type="text" id="descripcion" name="T02_DescDepartamento" value="<?php echo $_REQUEST['T02_DescDepartamento'] ?? '' ?>">
+                        <span class="error"><?php echo $aErrores['T02_DescDepartamento'] ?></span>
+                    </div>
+
+                    <div class="form-group">
                         <label for="fecha_creacion">Fecha creación Dpto: </label>
-                        <input type="date" id="fecha_creacion" name="fecha_creacion" value="<?php echo strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp()) ?>" readonly>
-                        <br>
+                        <input type="date" id="fecha_creacion" name="T02_FechaCreacionDepartamento" value="<?php echo $fechaHoy ?>" readonly>
+                        <span class="error"><?php echo $aErrores['T02_FechaCreacionDepartamento'] ?></span>
+                    </div>
+
+                    <div class="form-group">
                         <label for="volumenNegocio">Volumen de negocio:</label> 
-                        <input type="text" id="volumenNegocio" name="volumenNegocio" value="<?php echo $_REQUEST['T02_VolumenDeNegocio']??'' ?>">
+                        <input type="text" id="volumenNegocio" name="T02_VolumenDeNegocio" value="<?php echo $_REQUEST['T02_VolumenDeNegocio'] ?? '' ?>">
                         <span class="error"><?php echo $aErrores['T02_VolumenDeNegocio'] ?></span>
-                        <br>                  
-                        <input type="submit" value="Enviar" name="enviar">
-                    </form>
+                    </div>
+                    
+                    <input type="submit" value="Enviar" name="enviar">
+                </form>
 
-                <?php
-
+            <?php
             }
            ?>
         </section>
     </main>
-
     <footer>
-        <caption>
-            <a href="/ENLDWESProyectoTema3/indexProyectoTema3.php">Enrique Nieto Lorenzo</a> | 09/10/2025
-        </caption>
+        <p>Tu pie de página</p>
     </footer>
 </body>
 </html>
-
