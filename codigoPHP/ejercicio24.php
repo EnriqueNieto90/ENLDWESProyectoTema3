@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>EJERCICIO 24</title>
     <style>
-        /* (Tu CSS original va aquí, no ha cambiado) */
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
@@ -210,7 +209,7 @@
                 $aRespuestas['T02_FechaCreacionDepartamento'] = strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp());
                 $aRespuestas['T02_VolumenDeNegocio'] = $_REQUEST['T02_VolumenDeNegocio'];
 
-                echo "<h2>Resultados:</h2>";
+                echo "<h2>Detalles del departamento:</h2>";
                 foreach ($aRespuestas as $campo => $valor) {
                     if (!empty($valor)) { // Mostramos solo los campos con respuesta
                         echo "<p>$campo: <b>$valor</b></p>";
@@ -261,7 +260,9 @@
         </section>
     </main>
     <footer>
-        <p>Tu pie de página</p>
+        <caption>
+            <a href="/ENLDWESProyectoTema3/indexProyectoTema3.php">Enrique Nieto Lorenzo</a> | 10/11/2025
+        </caption>
     </footer>
 </body>
 </html>
