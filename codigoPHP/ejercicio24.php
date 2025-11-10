@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EJERCICIO 23</title>
+    <title>EJERCICIO 24</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,36 +53,85 @@
             height: 150px;
 	    color: white;
         }
-	main{
-	justify-content:center;
-	}
+
         
-        #telefono, #nombre {
+        #codDepartamento, #volumenNegocio {
             background-color: lightgoldenrodyellow;
         }
-        form *{
-            margin-top: 10px; 
+        
+        form {
+            max-width: 600px; 
+            margin: 20px auto;
         }
-        label{
-            display: inline-block;
-            width: 80px;
-            margin-left: 20px;
+
+        
+        .form-group {
+            margin-bottom: 18px;
         }
-        .aviso{font-size: 0.75em;}
-        input[name="enviar"], button{
-            padding: 5px 15px;
-            margin: 10px 50px;
-            border-radius: 20px;
-            background-color: rgb(73, 136, 187);
+
+        label {
+            display: block; 
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        
+        /* Efecto visual al seleccionar un campo */
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            border-color: green;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,128,0,0.2);
+        }
+        
+        input[readonly]{
+            background-color: #d3d3d3ff;
+            color: #6e6e6eff;
+        }
+
+        /* Estilo para los mensajes de error */
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        /* Estilo unificado para botones */
+        input[type="submit"],
+        a button {
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            background-color: green;
             color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
-        .error{color: red;}
+        
+        input[type="submit"]:hover,
+        a button:hover {
+            background-color: #006400;
+        }
 
     </style>
 </head>
 <body>
     <header>
-        <h1><b>EJERCICIO 23</b></h1>
+        <h1><b>EJERCICIO 24</b></h1>
     </header>
     <main>   
         <section>
@@ -102,32 +151,39 @@
 
             $entradaOK = true; //Variable que nos indica que todo va bien
             $aErrores = [  //Array donde recogemos los mensajes de error
-                'nombre' => '', 
-                'edad' => '', 
-                'telefono'=> ''
+                'T02_CodDepartamento' => '', 
+                'T02_DescDepartamento' => '',
+                'T02_FechaCreacionDepartamento' => '',
+                'T02_VolumenDeNegocio' => '',
+                'T02_FechaBajaDepartamento' => ''
             ];
             $aRespuestas=[ //Array donde recogeremos la respuestas correctas (si $entradaOK)
-                'nombre' => '', 
-                'edad' => '', 
-                'telefono'=> ''
+                'T02_CodDepartamento' => '', 
+                'T02_DescDepartamento' => '',
+                'T02_FechaCreacionDepartamento' => '',
+                'T02_VolumenDeNegocio' => '',
+                'T02_FechaBajaDepartamento' => ''
             ]; 
 
             //Para cada campo del formulario: Validar entrada y actuar en consecuencia
             if (isset($_REQUEST["enviar"])) {//Código que se ejecuta cuando se envía el formulario
 
                 // Validamos los datos del formulario
-                $aErrores['nombre']= validacionFormularios::comprobarAlfabetico($_REQUEST['nombre'],100,0,1,);
-                $aErrores['edad']= validacionFormularios::comprobarEntero($_REQUEST['edad']);
-                $aErrores['telefono'] = validacionFormularios::validarTelefono($_REQUEST['telefono']);
+                $aErrores['T02_CodDepartamento']= validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'],3,0,1,);
+                $aErrores['T02_DescDepartamento']= validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'],255,0,1,);
+                $ofechaCreacionDepartamento = new DateTime(); // creamos la fecha actual para pasarla al validarfecha
+                $aErrores['T02_FechaCreacionDepartamento']= validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'],$ofechaCreacionDepartamento->format('m/d/Y'));
+                $aErrores['T02_VolumenDeNegocio']= validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio']);
+                
 
-                if(!empty($_REQUEST['telefono'])){ // Comprobar si el telefono está vacío
+                if(!empty($_REQUEST['T02_CodDepartamento'])){ 
                     foreach($aErrores as $campo => $valor){
                         if(!empty($valor)){ // Comprobar si el valor es válido
                             $entradaOK = false;
                         } 
                     }
                 }else{ //Construir mensajes de error
-                    $aErrores['telefono']='Introduce un teléfono';
+                    $aErrores['T02_CodDepartamento']='Introduce un código de departamento';
                     $entradaOK = false;
                 }
 
@@ -136,11 +192,15 @@
             }
             //Tratamiento del formulario
             if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
+                date_default_timezone_set('Europe/Madrid');
+                setlocale(LC_TIME, 'es_ES.utf8');
 
                 // Recuperar los valores del formulario
-                $aRespuestas['nombre'] = $_REQUEST['nombre'];
-                $aRespuestas['edad'] = $_REQUEST['edad'];
-                $aRespuestas['telefono'] = $_REQUEST['telefono'];
+                $aRespuestas['T02_CodDepartamento'] = $_REQUEST['T02_CodDepartamento'];
+                $aRespuestas['T02_DescDepartamento'] = $_REQUEST['T02_DescDepartamento'];
+                $ofechaCreacionDepartamento = new DateTime($_REQUEST['T02_FechaCreacionDepartamento']);
+                $aRespuestas['T02_FechaCreacionDepartamento'] = strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp());
+                $aRespuestas['T02_VolumenDeNegocio'] = $_REQUEST['T02_VolumenDeNegocio'];
 
                 echo "<h2>Resultados:</h2>";
                 foreach ($aRespuestas as $campo => $valor) {
@@ -155,19 +215,24 @@
                 //Mostrar los datos tecleados correctamente en intentos anteriores
                 //Mostrar mensajes de error (si los hay y el formulario no se muestra por primera vez)
                 ?>
-                    <h2>Datos personales</h2>
+                    <h2>DATOS DEPARTAMENTO</h2>
+                    <hr>
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $_REQUEST['nombre']??'' ?>"><span class="error"><?php echo $aErrores['nombre'] ?></span>
+                        <label for="codDepartamento">Código de Dpto:</label>
+                        <input type="text" id="codDepartamento" name="codDepartamento" value="">
+                        <span class="error"><?php echo $aErrores['T02_CodDepartamento'] ?></span>
                         <br>
-                        <label for="edad">Edad:</label>
-                        <input type="number" name="edad" value="<?php echo $_REQUEST['edad']??'' ?>">
+                        <label for="descripcion">Descripcion Dpto:</label>
+                        <input type="text" id="descripcion" name="descripcion" value="<?php echo $_REQUEST['T02_DescDepartamento']??'' ?>">
                         <br>
-                        <label for="telefono">Telefono:</label> 
-                        <input type="text" id="telefono" name="telefono" value="<?php echo $_REQUEST['telefono']??'' ?>"><span class="error">*<?php echo $aErrores['telefono'] ?></span>
+                        <label for="fecha_creacion">Fecha creación Dpto: </label>
+                        <input type="date" id="fecha_creacion" name="fecha_creacion" value="<?php echo strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp()) ?>" readonly>
                         <br>
+                        <label for="volumenNegocio">Volumen de negocio:</label> 
+                        <input type="text" id="volumenNegocio" name="volumenNegocio" value="<?php echo $_REQUEST['T02_VolumenDeNegocio']??'' ?>">
+                        <span class="error"><?php echo $aErrores['T02_VolumenDeNegocio'] ?></span>
+                        <br>                  
                         <input type="submit" value="Enviar" name="enviar">
-                        <p class="aviso">*Campos obligatorios</p>
                     </form>
 
                 <?php

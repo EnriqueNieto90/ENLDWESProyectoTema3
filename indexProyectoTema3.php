@@ -212,13 +212,13 @@
                 <td><a href="codigoPHP/ejercicio23.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
- <!--           <tr>
+            <tr>
                 <td>24</td>
                 <td>Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la  misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente, pero las respuestas que habíamos tecleado correctamente aparecerán en el formulario y no tendremos que volver a teclearlas.</td>
                 <td><a href="codigoPHP/ejercicio24.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
-            <tr>
+ <!--             <tr>
                 <td>25</td>
                 <td>Trabajar en PlantillaFormulario.php mi plantilla para hacer formularios como churros.</td>
                 <td><a href=""><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
