@@ -55,7 +55,7 @@
         }
 
         
-        #codDepartamento, #volumenNegocio {
+        #codDepartamento, #descripcion {
             background-color: lightgoldenrodyellow;
         }
         
