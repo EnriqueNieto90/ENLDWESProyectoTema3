@@ -55,7 +55,7 @@
         }
 
         
-        #codDepartamento, #descripcion {
+        #codDepartamento, #descripcion, #volumenNegocio {
             background-color: lightgoldenrodyellow;
         }
         
@@ -138,7 +138,7 @@
             <?php 
             /**
             * @author: Enrique Nieto Lorenzo
-            * @since: 27/10/2025
+            * @since: 24/11/2025
             * 24.Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la
             * misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta
             * esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente,
@@ -151,18 +151,18 @@
 
             $entradaOK = true; //Variable que nos indica que todo va bien
             $aErrores = [ //Array donde recogemos los mensajes de error
-                'T02_CodDepartamento' => '', 
-                'T02_DescDepartamento' => '',
-                'T02_FechaCreacionDepartamento' => '',
-                'T02_VolumenDeNegocio' => '',
-                'T02_FechaBajaDepartamento' => ''
+                'CodDepartamento' => '', 
+                'DescDepartamento' => '',
+                'FechaCreacionDepartamento' => '',
+                'VolumenDeNegocio' => '',
+                'FechaBajaDepartamento' => ''
             ];
             $aRespuestas=[ //Array donde recogeremos la respuestas correctas (si $entradaOK)
-                'T02_CodDepartamento' => '', 
-                'T02_DescDepartamento' => '',
-                'T02_FechaCreacionDepartamento' => '',
-                'T02_VolumenDeNegocio' => '',
-                'T02_FechaBajaDepartamento' => ''
+                'CodDepartamento' => '', 
+                'DescDepartamento' => '',
+                'FechaCreacionDepartamento' => '',
+                'VolumenDeNegocio' => '',
+                'FechaBajaDepartamento' => ''
             ]; 
 
             //Para cada campo del formulario: Validar entrada y actuar en consecuencia
@@ -170,20 +170,14 @@
 
                 // Validamos los datos del formulario
                 // CAMPO OBLIGATORIO (amarillo)
-                $aErrores['T02_CodDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'], 3, 3, 1); // 1 = Requerido
+                $aErrores['CodDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'], 3, 3, 1); // 1 = Requerido u obligatorio
                 
-                $aErrores['T02_DescDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'], 255, 1, 1); // 1 = Requerido
+                $aErrores['DescDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'], 255, 1, 1); // 1 = Requerido u obligatorio
                 
-                // CAMPO OBLIGATORIO (amarillo)
-                // Primero comprobamos que no esté vacío
-                $aErrores['T02_VolumenDeNegocio'] = validacionFormularios::comprobarNoVacio($_REQUEST['T02_VolumenDeNegocio']);
-                if (empty($aErrores['T02_VolumenDeNegocio'])) {
-                    // Si no está vacío, comprobamos que sea un float
-                    $aErrores['T02_VolumenDeNegocio'] = validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio']);
-                }
+                $aErrores['VolumenDeNegocio'] = validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio'], 255 , 1, 1); // 1 = Requerido u obligatorio
                 
                 // No es necesario validar la fecha de creación si es readonly y la ponemos nosotros
-                // $aErrores['T02_FechaCreacionDepartamento'] = validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'], 'now');
+                // $aErrores['FechaCreacionDepartamento'] = validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'], 'now');
 
                 // Recorremos el array de errores
                 foreach ($aErrores as $campo => $error) {
@@ -199,15 +193,16 @@
             
             //Tratamiento del formulario
             if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
+                
                 date_default_timezone_set('Europe/Madrid');
                 setlocale(LC_TIME, 'es_ES.utf8');
-
+                
                 // Recuperar los valores del formulario
-                $aRespuestas['T02_CodDepartamento'] = $_REQUEST['T02_CodDepartamento'];
-                $aRespuestas['T02_DescDepartamento'] = $_REQUEST['T02_DescDepartamento'];
+                $aRespuestas['CodDepartamento'] = $_REQUEST['T02_CodDepartamento'];
+                $aRespuestas['DescDepartamento'] = $_REQUEST['T02_DescDepartamento'];
                 $ofechaCreacionDepartamento = new DateTime($_REQUEST['T02_FechaCreacionDepartamento']);
-                $aRespuestas['T02_FechaCreacionDepartamento'] = strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp());
-                $aRespuestas['T02_VolumenDeNegocio'] = $_REQUEST['T02_VolumenDeNegocio'];
+                $aRespuestas['FechaCreacionDepartamento'] = strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp());
+                $aRespuestas['VolumenDeNegocio'] = $_REQUEST['T02_VolumenDeNegocio'];
 
                 echo "<h2>Detalles del departamento:</h2>";
                 foreach ($aRespuestas as $campo => $valor) {
@@ -222,7 +217,8 @@
             } else { //Mostrar el formulario hasta que lo rellenemos correctamente
                 
                 // Obtenemos la fecha de hoy en el formato YYYY-MM-DD
-                $fechaHoy = date('Y-m-d');
+                $ofechaHoy = new DateTime();
+                $ofechaHoy = $ofechaHoy->format('Y-m-d');
             ?>
                 <h2>DATOS DEPARTAMENTO</h2>
                 <hr>
@@ -230,25 +226,25 @@
                     <div class="form-group">
                         <label for="codDepartamento">Código de Dpto:</label>
                         <input type="text" id="codDepartamento" name="T02_CodDepartamento" value="<?php echo $_REQUEST['T02_CodDepartamento'] ?? '' ?>">
-                        <span class="error"><?php echo $aErrores['T02_CodDepartamento'] ?></span>
+                        <span class="error"><?php echo $aErrores['CodDepartamento'] ?></span>
                     </div>
                     
                     <div class="form-group">
                         <label for="descripcion">Descripcion Dpto:</label>
                         <input type="text" id="descripcion" name="T02_DescDepartamento" value="<?php echo $_REQUEST['T02_DescDepartamento'] ?? '' ?>">
-                        <span class="error"><?php echo $aErrores['T02_DescDepartamento'] ?></span>
+                        <span class="error"><?php echo $aErrores['DescDepartamento'] ?></span>
                     </div>
 
                     <div class="form-group">
                         <label for="fecha_creacion">Fecha creación Dpto: </label>
-                        <input type="date" id="fecha_creacion" name="T02_FechaCreacionDepartamento" value="<?php echo $fechaHoy ?>" readonly>
-                        <span class="error"><?php echo $aErrores['T02_FechaCreacionDepartamento'] ?></span>
+                        <input type="date" id="fecha_creacion" name="T02_FechaCreacionDepartamento" value="<?php echo $ofechaHoy ?>" readonly>
+                        <span class="error"><?php echo $aErrores['FechaCreacionDepartamento'] ?></span>
                     </div>
 
                     <div class="form-group">
                         <label for="volumenNegocio">Volumen de negocio:</label> 
                         <input type="text" id="volumenNegocio" name="T02_VolumenDeNegocio" value="<?php echo $_REQUEST['T02_VolumenDeNegocio'] ?? '' ?>">
-                        <span class="error"><?php echo $aErrores['T02_VolumenDeNegocio'] ?></span>
+                        <span class="error"><?php echo $aErrores['VolumenDeNegocio'] ?></span>
                     </div>
                     
                     <input type="submit" value="Enviar" name="enviar">
