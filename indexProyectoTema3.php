@@ -140,12 +140,12 @@
 <!--                <td><a href=""><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>-->
             </tr>
-<!--            <tr>
+            <tr>
                 <td>12</td>
                 <td>Mostrar el contenido de las variables superglobales (utilizando print_r() y foreach()).</td>
                 <td><a href="codigoPHP/ejercicio12.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href="mostrarcodigo/muestraejercicio12.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
-            </tr> -->
+            </tr>
 <!--            <tr>
                 <td>13</td>
                 <td>Crear una función que cuente el número de visitas a la página actual desde una fecha concreta.</td>
@@ -170,13 +170,13 @@
                 <td><a href="codigoPHP/ejercicio16.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href="mostrarcodigo/muestraejercicio16.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
-<!--       <tr>
+            <tr>
                 <td>17</td>
                 <td>Inicializar un array (bidimensional con dos índices numéricos) donde almacenamos el nombre de las personas que tienen reservado el asiento en un teatro de 20 filas y 15 asientos por fila. (Inicializamos el array ocupando únicamente 5 asientos). Recorrer el array con distintas técnicas (foreach(), while(), for()) para mostrar los asientos ocupados en cada fila y las personas que lo ocupan.</td>
                 <td><a href="codigoPHP/ejercicio17.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
-                <td><a href="muestraejercicio17.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
+                <td><a href="mostrarcodigo/muestraejercicio17.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
-            <tr>
+<!--        <tr>
                 <td>18</td>
                 <td>Recorrer el array anterior utilizando funciones para obtener el mismo resultado.</td>
                 <td><a href="codigoPHP/ejercicio18.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
@@ -206,19 +206,19 @@
                 <td><a href="codigoPHP/ejercicio22.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
                 <td><a href="mostrarcodigo/muestraejercicio22.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
- <!--            <tr>
+            <tr>
                 <td>23</td>
                 <td>Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente.</td>
                 <td><a href="codigoPHP/ejercicio23.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
-                <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
+                <td><a href="mostrarcodigo/muestraejercicio23.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
             <tr>
                 <td>24</td>
                 <td>Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la  misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente, pero las respuestas que habíamos tecleado correctamente aparecerán en el formulario y no tendremos que volver a teclearlas.</td>
                 <td><a href="codigoPHP/ejercicio24.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
-                <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
+                <td><a href="mostrarcodigo/muestraejercicio24.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
-            <tr>
+ <!--             <tr>
                 <td>25</td>
                 <td>Trabajar en PlantillaFormulario.php mi plantilla para hacer formularios como churros.</td>
                 <td><a href=""><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
