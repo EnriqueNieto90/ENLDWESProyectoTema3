@@ -89,7 +89,8 @@
             // Se declara el array que contendrá la estructura del teatro.
             $teatro = [];
 
-            // Se crea la estructura antes de intentar acceder a sus elementos.
+            // Bucle anidado para inicializar cada asiento del teatro a null (vacío).
+            // Es crucial crear la estructura antes de intentar acceder a sus elementos.
             for ($fila = 1; $fila <= NUMERO_FILAS; $fila++) {
                 for ($asiento = 1; $asiento <= ASIENTOS_POR_FILA; $asiento++) {
                     $teatro[$fila][$asiento] = null;
@@ -109,11 +110,12 @@
             <h1>Plano del Teatro</h1>
 
         <!-- ========================================================================= -->
-        <!-- === VISUALIZACIÓN CON BUCLE FOREACH                                       -->
+        <!-- === VISUALIZACIÓN CON BUCLE FOREACH (Método recomendado)                 -->
         <!-- ========================================================================= -->
         <h3>Recorrido con <code>foreach</code></h3>
         <table>
             <?php
+            // El bucle foreach es ideal para arrays, ya que abstrae el manejo de índices.
             // El primer bucle itera sobre las filas.
             foreach ($teatro as $numeroFila => $asientosDeLaFila) {
                 echo "<tr>";
@@ -135,7 +137,7 @@
         </table>
 
         <!-- ========================================================================= -->
-        <!-- === VISUALIZACIÓN CON BUCLE FOR                                           -->
+        <!-- === VISUALIZACIÓN CON BUCLE FOR (Método clásico)                         -->
         <!-- ========================================================================= -->
         <h3>Recorrido con <code>for</code></h3>
         <table>
@@ -158,11 +160,12 @@
         </table>
 
         <!-- ========================================================================= -->
-        <!-- === VISUALIZACIÓN CON BUCLE WHILE                                         -->
+        <!-- === VISUALIZACIÓN CON BUCLE WHILE (Método manual)                        -->
         <!-- ========================================================================= -->
         <h3>Recorrido con <code>while</code></h3>
         <table>
             <?php
+            // El bucle while requiere la inicialización y el incremento manual de los contadores.
             $fila = 1;
             while ($fila <= NUMERO_FILAS) {
                 echo "<tr>";
