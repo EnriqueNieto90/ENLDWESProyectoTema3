@@ -175,7 +175,7 @@
                 <td>17</td>
                 <td>Inicializar un array (bidimensional con dos índices numéricos) donde almacenamos el nombre de las personas que tienen reservado el asiento en un teatro de 20 filas y 15 asientos por fila. (Inicializamos el array ocupando únicamente 5 asientos). Recorrer el array con distintas técnicas (foreach(), while(), for()) para mostrar los asientos ocupados en cada fila y las personas que lo ocupan.</td>
                 <td><a href="codigoPHP/ejercicio17.php"><img src="webroot/media/images/botonplay.png" alt="boton_play"></a></td>
-                <td><a href="muestraejercicio17.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
+                <td><a href="mostrarcodigo/muestraejercicio17.php"><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>
 <!--        <tr>
                 <td>18</td>
