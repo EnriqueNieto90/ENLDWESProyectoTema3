@@ -68,19 +68,28 @@
             <?php
             /**
             * @author: Enrique Nieto Lorenzo
-            * @since: 16/10/2025
+            * @since: 14/12/2025
             * 3. Mostrar en tu página index la fecha y hora actual formateada en castellano. (Utilizar cuando sea posible la clase DateTime)
             */
-            // Zona horaria 
+            // Zona horaria.
             date_default_timezone_set('Europe/Madrid');
             // Crear el objeto DateTime.
             $ofechaActual = new DateTime();
-        
-            // Locale en español
-            setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'spanish');
-       
-            echo("<h3>Fecha y hora actual en castellano:</h3><br>");
-            echo( "Hoy es " .$ofechaActual->format("l")." ".$ofechaActual->format("d")." de ". $ofechaActual->format("F"). " de ". $ofechaActual->format("o"). " y la hora es ". $ofechaActual->format("H:i:s"));
+            
+            //Creamos un formateador donde le decimos: Idioma Español de España, Formato de Fecha COMPLETO, sin formato de hora, zona horaria y tipo de calendario.
+            $formateador = new IntlDateFormatter(
+                'es_ES',                    
+                IntlDateFormatter::FULL,     
+                IntlDateFormatter::NONE,     
+                'Europe/Madrid',            
+                IntlDateFormatter::GREGORIAN
+            );
+            
+            //Formatear el objeeto DateTime directamente
+            echo"<h3>Fecha y hora actual en castellano:</h3><br>";
+            echo "<p>La fecha de hoy es: <span>" . $formateador->format($ofechaActual) . "</span></p>";
+            //Como los números no se traducen utilizamos format() de DateTime
+            echo "<p>Y la hora actual es: " . $ofechaActual->format("H:i:s") . "</p>";
             ?>
         </section>
     </main>

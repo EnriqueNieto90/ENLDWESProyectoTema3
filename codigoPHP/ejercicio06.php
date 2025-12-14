@@ -20,7 +20,7 @@
             margin: 0;
         }
         main {
-            max-width: 1400px;
+            max-width: 800px;
             margin: 30px auto;
             padding: 20px;
             background: white;
@@ -45,6 +45,9 @@
             border-left: 5px solid purple;
             border-right: 5px solid purple;
         }
+        img {
+            height: 25px;
+        }
 
         footer{
             margin: auto;
@@ -53,9 +56,6 @@
             height: 150px;
 	    color: white;
         }
-	main{
-	justify-content:center;
-	}
 
     </style>
 </head>
@@ -72,18 +72,30 @@
             * 6. Operar con fechas: calcular la fecha y el día de la semana de dentro de 60 días.
             */
             
-            // Zona horaria 
+            // Configuramos zona horaria
             date_default_timezone_set('Europe/Madrid');
-            
-            //Crear el objeto DateTime
-            $ofechaActual=new DateTime();
-            
-            //Intervalo de días
-            $oIntervaloFecha=new DateInterval('P60D');
-      
-            $ofechaActual->add($oIntervaloFecha);
-            echo( "Dentro de 60 días la fecha será " .$ofechaActual->format("l")." ".$ofechaActual->format("d").
-                  " de ". $ofechaActual->format("F"). " de ". $ofechaActual->format("o"));
+
+            // Creamos el objeto de la clase DateTimeInmutable.
+            $ofechaActual = new DateTimeImmutable(); 
+
+            // Calculamos la fecha que queramos. En este caso sumamos 60 días
+            $ofechaFutura = $ofechaActual->modify('+60 days'); 
+
+            // Formateamos en Español la fecha y la hora.
+            $formateador = new IntlDateFormatter(
+                'es_ES', 
+                IntlDateFormatter::FULL, 
+                IntlDateFormatter::MEDIUM,
+                'Europe/Madrid'
+            );
+
+            echo "<h3>Cálculo de fechas con PHP:</h3>";
+
+            // Mostramos el original (sigue intacto gracias a Immutable)
+            echo "<p>Fecha de hoy: " . $formateador->format($ofechaActual) . "</p>";
+
+            // Mostramos el resultado
+            echo "<p>Fecha dentro de 60 días: <strong>" . $formateador->format($ofechaFutura) . "</strong></p>";
             ?>
         </section>
     </main>

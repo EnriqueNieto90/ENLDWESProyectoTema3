@@ -63,11 +63,14 @@
     <header>
         <h1><b>EJERCICIO 24</b></h1>
     </header>
-    <main>
-       <?php
+    <main>   
+        <section>
+            <?php
             highlight_file("../codigoPHP/ejercicio24.php");
-        ?>
+            ?>
+        </section>
     </main>
+
     <footer>
         <caption>
             <a href="/ENLDWESProyectoTema3/indexProyectoTema3.php">Enrique Nieto Lorenzo</a> | 09/10/2025
@@ -75,6 +78,4 @@
     </footer>
 </body>
 </html>
-
-
 

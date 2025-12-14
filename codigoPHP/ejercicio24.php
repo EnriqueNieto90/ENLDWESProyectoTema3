@@ -55,7 +55,7 @@
         }
 
         
-        #codDepartamento, #descripcion, #volumenNegocio {
+        #codDepartamento, #volumenNegocio {
             background-color: lightgoldenrodyellow;
         }
         
@@ -138,7 +138,7 @@
             <?php 
             /**
             * @author: Enrique Nieto Lorenzo
-            * @since: 24/11/2025
+            * @since: 14/12/2025
             * 24.Construir un formulario para recoger un cuestionario realizado a una persona y mostrar en la
             * misma página las preguntas y las respuestas recogidas; en el caso de que alguna respuesta
             * esté vacía o errónea volverá a salir el formulario con el mensaje correspondiente,
@@ -170,14 +170,20 @@
 
                 // Validamos los datos del formulario
                 // CAMPO OBLIGATORIO (amarillo)
-                $aErrores['CodDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_CodDepartamento'], 3, 3, 1); // 1 = Requerido u obligatorio
+                $aErrores['CodDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['CodDepartamento'], 3, 3, 1); // 1 = Requerido
                 
-                $aErrores['DescDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['T02_DescDepartamento'], 255, 1, 1); // 1 = Requerido u obligatorio
+                $aErrores['DescDepartamento'] = validacionFormularios::comprobarAlfabetico($_REQUEST['DescDepartamento'], 255, 1, 1); // 1 = Requerido
                 
-                $aErrores['VolumenDeNegocio'] = validacionFormularios::comprobarFloat($_REQUEST['T02_VolumenDeNegocio'], 255 , 1, 1); // 1 = Requerido u obligatorio
+                // CAMPO OBLIGATORIO (amarillo)
+                // Primero comprobamos que no esté vacío
+                $aErrores['VolumenDeNegocio'] = validacionFormularios::comprobarNoVacio($_REQUEST['VolumenDeNegocio']);
+                if (empty($aErrores['VolumenDeNegocio'])) {
+                    // Si no está vacío, comprobamos que sea un float
+                    $aErrores['VolumenDeNegocio'] = validacionFormularios::comprobarFloat($_REQUEST['VolumenDeNegocio']);
+                }
                 
                 // No es necesario validar la fecha de creación si es readonly y la ponemos nosotros
-                // $aErrores['FechaCreacionDepartamento'] = validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'], 'now');
+                // $aErrores['T02_FechaCreacionDepartamento'] = validacionFormularios::validarFecha($_REQUEST['T02_FechaCreacionDepartamento'], 'now');
 
                 // Recorremos el array de errores
                 foreach ($aErrores as $campo => $error) {
@@ -193,16 +199,15 @@
             
             //Tratamiento del formulario
             if($entradaOK){ //Cargar la variable $aRespuestas y tratamiento de datos OK
-                
                 date_default_timezone_set('Europe/Madrid');
                 setlocale(LC_TIME, 'es_ES.utf8');
-                
+
                 // Recuperar los valores del formulario
-                $aRespuestas['CodDepartamento'] = $_REQUEST['T02_CodDepartamento'];
-                $aRespuestas['DescDepartamento'] = $_REQUEST['T02_DescDepartamento'];
-                $ofechaCreacionDepartamento = new DateTime($_REQUEST['T02_FechaCreacionDepartamento']);
-                $aRespuestas['FechaCreacionDepartamento'] = strftime("%A, %d de %B de %Y", $ofechaCreacionDepartamento->getTimestamp());
-                $aRespuestas['VolumenDeNegocio'] = $_REQUEST['T02_VolumenDeNegocio'];
+                $aRespuestas['CodDepartamento'] = $_REQUEST['CodDepartamento'];
+                $aRespuestas['DescDepartamento'] = $_REQUEST['DescDepartamento'];
+                $ofechaCreacionDepartamento = new DateTime($_REQUEST['FechaCreacionDepartamento']);
+                $aRespuestas['FechaCreacionDepartamento'] = $ofechaCreacionDepartamento->format('d-m-Y');
+                $aRespuestas['VolumenDeNegocio'] = $_REQUEST['VolumenDeNegocio'];
 
                 echo "<h2>Detalles del departamento:</h2>";
                 foreach ($aRespuestas as $campo => $valor) {
@@ -216,34 +221,31 @@
 
             } else { //Mostrar el formulario hasta que lo rellenemos correctamente
                 
-                // Obtenemos la fecha de hoy en el formato YYYY-MM-DD
-                $ofechaHoy = new DateTime();
-                $ofechaHoy = $ofechaHoy->format('Y-m-d');
             ?>
                 <h2>DATOS DEPARTAMENTO</h2>
                 <hr>
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post"> 
                     <div class="form-group">
                         <label for="codDepartamento">Código de Dpto:</label>
-                        <input type="text" id="codDepartamento" name="T02_CodDepartamento" value="<?php echo $_REQUEST['T02_CodDepartamento'] ?? '' ?>">
+                        <input type="text" id="codDepartamento" name="CodDepartamento" value="<?php echo $_REQUEST['CodDepartamento'] ?? '' ?>">
                         <span class="error"><?php echo $aErrores['CodDepartamento'] ?></span>
                     </div>
                     
                     <div class="form-group">
                         <label for="descripcion">Descripcion Dpto:</label>
-                        <input type="text" id="descripcion" name="T02_DescDepartamento" value="<?php echo $_REQUEST['T02_DescDepartamento'] ?? '' ?>">
+                        <input type="text" id="descripcion" name="DescDepartamento" value="<?php echo $_REQUEST['DescDepartamento'] ?? '' ?>">
                         <span class="error"><?php echo $aErrores['DescDepartamento'] ?></span>
                     </div>
 
                     <div class="form-group">
                         <label for="fecha_creacion">Fecha creación Dpto: </label>
-                        <input type="date" id="fecha_creacion" name="T02_FechaCreacionDepartamento" value="<?php echo $ofechaHoy ?>" readonly>
+                        <input type="text" id="fecha_creacion" name="FechaCreacionDepartamento" value="<?php echo (new DateTime())->format('d-m-Y'); ?>" readonly>
                         <span class="error"><?php echo $aErrores['FechaCreacionDepartamento'] ?></span>
                     </div>
 
                     <div class="form-group">
                         <label for="volumenNegocio">Volumen de negocio:</label> 
-                        <input type="text" id="volumenNegocio" name="T02_VolumenDeNegocio" value="<?php echo $_REQUEST['T02_VolumenDeNegocio'] ?? '' ?>">
+                        <input type="text" id="volumenNegocio" name="VolumenDeNegocio" value="<?php echo $_REQUEST['VolumenDeNegocio'] ?? '' ?>">
                         <span class="error"><?php echo $aErrores['VolumenDeNegocio'] ?></span>
                     </div>
                     

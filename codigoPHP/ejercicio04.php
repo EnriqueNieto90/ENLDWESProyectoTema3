@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EJERCICIO 1</title>
+    <title>EJERCICIO 4</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,22 +68,28 @@
             <?php
             /**
             * @author: Enrique Nieto Lorenzo
-            * @since: 16/10/2025
-            * 2. Inicializar y mostrar una variable heredoc.
+            * @since: 14/12/2025
+            * 4. Mostrar en tu página index la fecha y hora actual en Oporto formateada en portugués.
             */
-            // Zona horaria 
+            // Zona horaria.
             date_default_timezone_set('Europe/Lisbon');
-            
             // Crear el objeto DateTime.
             $ofechaActual = new DateTime();
-        
-            // Locale en portugués
-            setlocale(LC_TIME, 'pt_PT.UTF-8', 'pt_PT', 'portuguese');
-
-            echo("<h3>Fecha y hora actual en portugués.</h3><br>");
-            echo( "Hoje é " .$ofechaActual->format("l")." ".$ofechaActual->format("d")." de ". $ofechaActual->format("F"). " de ". $ofechaActual->format("o"). " e a hora é ". $ofechaActual->format("H:i:s"));
             
-            date_default_timezone_set('Europe/Madrid');
+            //Creamos un formateador donde le decimos: Idioma portugués, Formato de Fecha COMPLETO, sin formato de hora, zona horaria y tipo de calendario.
+            $formateador = new IntlDateFormatter(
+                'pt_PT',                    
+                IntlDateFormatter::FULL,     
+                IntlDateFormatter::NONE,     
+                'Europe/Lisbon',            
+                IntlDateFormatter::GREGORIAN
+            );
+            
+            //Formatear el objeeto DateTime directamente
+            echo"<h3>Fecha y hora actual en portugués:</h3><br>";
+            echo "<p>A data de hoje é: <span>" . $formateador->format($ofechaActual) . "</span></p>";
+            //Como los números no se traducen utilizamos format() de DateTime
+            echo "<p>E a hora atual é: " . $ofechaActual->format("H:i:s") . "</p>";
             ?>
         </section>
     </main>

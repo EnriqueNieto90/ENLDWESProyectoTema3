@@ -75,13 +75,13 @@
             date_default_timezone_set('Europe/Madrid');
             
             //Crear el objeto DateTime
-             $ofechaTimeStamp=new DateTime();
+             $ofechaActual=new DateTime();
              
             //Obtener el timestamp actual
-            $timestamp=$ofechaTimeStamp->getTimestamp();
+            $timestamp=$ofechaActual->getTimestamp();
             
-            echo"TimeStamp : ".$timestamp;
-            echo "<br>Timestamp con formato: ".date("d-m-Y H:i:s",$timestamp);
+            echo "TimeStamp en segundos : " .$ofechaActual->getTimestamp();
+            echo "<br>Timestamp con formato con fecha y hora: " .$ofechaActual->format("Y-m-d H:i:s");
             ?>
         </section>
     </main>
