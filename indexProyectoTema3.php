@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TEMA 3 - CARACTERÍSTICAS DEL LENGUAJE PHP</title>
+    <link rel="stylesheet" href="./webroot/css/estiloFormularioTabla.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,7 +68,7 @@
     <main>
         <h2><b>ÍNDICE EJERCICIOS TEMA 3</b></h2>
         
-        <table border solid black 2px>
+        <table>
             <tr>
                 <td>0</td>
                 <td>Hola mundo y phpinfo().</td>
@@ -243,8 +244,6 @@
                 <td><a href=""><img src="webroot/media/images/botoncode.png" alt="boton_code"></a></td>
             </tr>-->
         </table>
-    </table>
-            
         
     </main>
 
