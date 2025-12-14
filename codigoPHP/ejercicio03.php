@@ -68,7 +68,7 @@
             <?php
             /**
             * @author: Enrique Nieto Lorenzo
-            * @since: 16/10/2025
+            * @since: 14/12/2025
             * 3. Mostrar en tu página index la fecha y hora actual formateada en castellano. (Utilizar cuando sea posible la clase DateTime)
             */
             // Zona horaria.
