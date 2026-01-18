@@ -2,69 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EJERCICIO 1</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: green;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-        }
-        main {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            background: #ecf0f1;
-            margin: 10px 0;
-            padding: 15px;
-            border-left: 5px solid green;
-            border-right: 5px solid green;
-            transition: 0.3s;
-	    border-radius:8px;
-        }
-        li:hover {
-            background: #d6eaf8;
-            border-left: 5px solid purple;
-            border-right: 5px solid purple;
-        }
-
-        footer{
-            margin: auto;
-            background-color: green;
-            text-align: center;
-            height: 150px;
-	    color: white;
-        }
-	main{
-	justify-content:center;
-	}
-
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1 | Enrique Nieto</title>
+    
+    <link rel="stylesheet" href="../../webroot/css/all.min.css">
+    <link rel="stylesheet" href="../../webroot/css/estilos.css">
 </head>
 <body>
-    <header>
-        <h1><b>EJERCICIO 1</b></h1>
+
+    <header class="cabecera-principal">
+        <div class="contenedor contenido-cabecera">
+            <div class="identidad">
+                <a href="../indexProyectoTema3.php" style="text-decoration:none;">
+                    <div class="logo-iniciales">EN</div>
+                </a>
+                <h1>Enrique Nieto Lorenzo</h1>
+            </div>
+            
+            <div class="curso-badge" style="background-color: #777BB4; color: white;">
+                Ejercicio 1
+            </div>
+        </div>
     </header>
-    <main>   
-        <section>
+
+    <main class="contenedor-principal">
+        
+        <h2 class="titulo-pagina">Inicializar variables y mostrar datos</h2>
+        
+        <div class="caja-ejercicio">
+            
             <?php
             /**
             * @author: Enrique Nieto Lorenzo
@@ -112,14 +78,31 @@
             var_dump($booleano);echo("<br>");
             
             ?>
-        </section>
+            
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="../mostrarcodigo/muestraejercicio01.php" class="boton boton-primario">
+                <i class="fa-solid fa-code"></i> Ver Código Fuente
+            </a>
+        </div>
+
     </main>
 
-    <footer>
-        <caption>
-            <a href="/ENLDWESProyectoTema3/indexProyectoTema3.php">Enrique Nieto Lorenzo</a> | 09/10/2025
-        </caption>
+    <footer class="pie-pagina">
+        <div class="contenedor contenido-footer">
+            <div class="texto-legal">
+                <p>2025-26 IES LOS SAUCES. ©Todos los derechos reservados.</p>
+                <p class="autor">Enrique Nieto Lorenzo. Fecha de Actualización: 20-11-2025</p>
+            </div>
+            <div class="iconos-footer">
+                <a href="https://github.com/EnriqueNieto" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="../../index.php" title="Inicio"><i class="fa-solid fa-house"></i></a> 
+                <a href="../indexProyectoTema3.php" title="Volver al Tema 3"><i class="fa-solid fa-arrow-turn-up"></i></a>
+            </div>
+        </div>
     </footer>
+
 </body>
 </html>
 
